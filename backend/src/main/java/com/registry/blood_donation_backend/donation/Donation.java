@@ -28,7 +28,6 @@ public class Donation {
     @NotBlank(message = "Location is required")
     private String location;
 
-    @NotNull(message = "Donor is required")
     @ManyToOne
     @JoinColumn(name = "donor_id", nullable = false)
     private Donor donor;
