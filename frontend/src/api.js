@@ -40,8 +40,8 @@ export async function updateDonor(id, donor) {
 }
 
 // Donations
-export async function getDonationsForDonor(donorId) {
-    const res = await fetch(`${BASE_URL}/donors/${donorId}/donations?size=10`);
+export async function getDonationsForDonor(donorId, page = 0, size = 5) {
+    const res = await fetch(`${BASE_URL}/donors/${donorId}/donations?page=${page}&size=${size}`);
     return handleResponse(res);
 }
 

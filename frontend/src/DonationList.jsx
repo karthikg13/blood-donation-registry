@@ -3,9 +3,15 @@ import { getDonationsForDonor, createDonation, updateDonation, deleteDonation } 
 
 function DonationList({ donorId }) {
     const [donations, setDonations] = useState([]);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
     const [form, setForm] = useState({ donationDate: "", quantity: "", location: "" });
     const [editingId, setEditingId] = useState(null);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        setPage(0);
+    }, [donorId]);
 
     useEffect(() => {
         if (donorId) {
@@ -15,12 +21,13 @@ function DonationList({ donorId }) {
         }
         setEditingId(null);
         setForm({ donationDate: "", quantity: "", location: "" });
-    }, [donorId]);
+    }, [donorId, page]);
 
     async function loadDonations() {
         try {
-            const data = await getDonationsForDonor(donorId);
+            const data = await getDonationsForDonor(donorId, page);
             setDonations(data.content);
+            setTotalPages(data.totalPages);
         } catch (err) {
             setError(err.message);
         }
@@ -110,6 +117,18 @@ function DonationList({ donorId }) {
                     </li>
                 ))}
             </ul>
+
+            {totalPages > 1 && (
+                <div>
+                    <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+                        Previous
+                    </button>
+                    <span> Page {page + 1} of {totalPages} </span>
+                    <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
+                        Next
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
