@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class DonationNotEligibleException extends RuntimeException {
 
-    public DonationNotEligibleException(LocalDate lastDonatioDate, long daysSinceLastDonation) {
-        super("Donor is not eligible to donate yet. Last donation was on " + lastDonatioDate + "(" + daysSinceLastDonation + " days ago). Must wait 90 days between donations.");
+    public DonationNotEligibleException(LocalDate lastDonationDate, long daysSinceLastDonation) {
+        super("Donor is not eligible to donate yet. Last donation was on " + lastDonationDate + ". Only " + daysSinceLastDonation + " days have passed. A minimum of 90 days is required.");
     }
 }
