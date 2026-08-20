@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDonors, createDonor, updateDonor, deleteDonor, onAuthSuccess } from "./api";
+import { getDonors, createDonor, updateDonor, deleteDonor, getDonationCountForDonor,onAuthSuccess } from "./api";
 
 function DonorList({ selectedDonorId, onSelectDonor }) {
     const [donors, setDonors] = useState([]);
@@ -58,9 +58,17 @@ function DonorList({ selectedDonorId, onSelectDonor }) {
     async function handleDelete(id) {
         setError("");
         try {
+            const count = await getDonationCountForDonor(id);
+            if(count > 0) {
+                const confirmed = window.confirm(
+                    `This donor has ${count} donation record${count === 1 ? "" : "s"}. ` + 
+                    `Deleting the donor will also delete ${count === 1 ? "it" : "them"}. Continue?`
+                );
+                if(!confirmed) return;
+            }
             await deleteDonor(id);
             loadDonors();
-            if (selectedDonorId === id) onSelectDonor(null);
+            if(selectedDonorId === id) onSelectDonor(null);
         } catch (err) {
             setError(err.message);
         }

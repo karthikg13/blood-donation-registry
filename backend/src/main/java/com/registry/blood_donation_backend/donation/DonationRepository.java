@@ -11,4 +11,6 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
     Page<Donation> findByDonorId(Long donorId, Pageable pageable);
 
     List<Donation> findByDonorIdOrderByDonationDateDesc(Long donorId);
+
+    long countByDonorId(Long donorId);
 }

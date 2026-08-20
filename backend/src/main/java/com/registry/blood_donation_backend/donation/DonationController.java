@@ -34,6 +34,11 @@ public class DonationController {
         return donationService.getDonationById(id);
     }
 
+    @GetMapping("/donors/{donorId}/donations/count")
+    public long getDonationCount(@PathVariable Long donorId) {
+        return donationService.getDonationCountForDonor(donorId);
+    }
+
     @PostMapping("/donors/{donorId}/donations")
     @ResponseStatus(HttpStatus.CREATED)
     public Donation createDonation(

@@ -132,3 +132,8 @@ export async function deleteDonation(id) {
     });
     return handleResponse(res);
 }
+
+export async function getDonationCountForDonor(donorId) {
+    const res = await fetch(`${BASE_URL}/donors/${donorId}/donations/count`);
+    return handleResponse(res);
+}

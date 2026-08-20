@@ -32,6 +32,10 @@ public class DonationService {
         return donationRepository.findByDonorId(donorId, pageable);
     }
 
+    public long getDonationCountForDonor(Long donorId) {
+        return donationRepository.countByDonorId(donorId);
+    }
+
     public Donation getDonationById(Long id) {
         return donationRepository.findById(id).orElseThrow(() -> new DonationNotFoundException(id));
     }
