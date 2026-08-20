@@ -40,11 +40,18 @@ function DonorList({ selectedDonorId, onSelectDonor }) {
     function handleEditClick(donor) {
         setEditingId(donor.id);
         setForm({ name: donor.name, bloodGroup: donor.bloodGroup, phone: donor.phone });
+        setError("");
     }
 
     function handleCancelEdit() {
         setEditingId(null);
         setForm({ name: "", bloodGroup: "", phone: "" });
+        setError("");
+    }
+
+    function handleSelectDonor(id) {
+        setError("");
+        onSelectDonor(id);
     }
 
     async function handleDelete(id) {
@@ -90,7 +97,7 @@ function DonorList({ selectedDonorId, onSelectDonor }) {
                 {donors.map((donor) => (
                     <li key={donor.id}>
                     <span
-                        onClick={() => onSelectDonor(donor.id)}
+                        onClick={() => handleSelectDonor(donor.id)}
                         style={{
                         cursor: "pointer",
                         fontWeight: selectedDonorId === donor.id ? "bold" : "normal",

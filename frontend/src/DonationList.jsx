@@ -20,6 +20,7 @@ function DonationList({ donorId }) {
             setDonations([]);
         }
         setEditingId(null);
+        setError("");
         setForm({ donationDate: "", quantity: "", location: "" });
     }, [donorId, page]);
 
