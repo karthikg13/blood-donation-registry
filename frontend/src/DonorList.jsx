@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDonors, createDonor, updateDonor, deleteDonor } from "./api";
+import { getDonors, createDonor, updateDonor, deleteDonor, onAuthSuccess } from "./api";
 
 function DonorList({ selectedDonorId, onSelectDonor }) {
     const [donors, setDonors] = useState([]);
@@ -9,6 +9,7 @@ function DonorList({ selectedDonorId, onSelectDonor }) {
 
     useEffect(() => {
         loadDonors();
+        onAuthSuccess(() => setError(""));
     }, []);
 
     async function loadDonors() {
@@ -98,14 +99,47 @@ function DonorList({ selectedDonorId, onSelectDonor }) {
             ) : (
                 <ul className="record-list">
                     {donors.map((donor) => (
-                        <li key={donor.id} className={selectedDonorId === donor.id ? "record-row selected" : "record-row"}>
-                            <span className="record-info" onClick={() => handleSelectDonor(donor.id)}>
-                                {donor.name} — {donor.bloodGroup} — {donor.phone}
-                            </span>
-                            <span className="record-actions">
-                                <button className="btn-small" onClick={() => handleEditClick(donor)}>Edit</button>
-                                <button className="btn-small btn-small-danger" onClick={() => handleDelete(donor.id)}>Delete</button>
-                            </span>
+                        <li
+                           key={donor.id}
+                           className={
+                               selectedDonorId === donor.id ? "record-card selected" : "record-card"
+                           }
+                           onClick={() => handleSelectDonor(donor.id)}
+                        >
+                            <div className="record-card-header">
+                                <span className="record-actions">
+                                    <button
+                                        className="btn-small"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleEditClick(donor);
+                                        }}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        className="btn-small btn-small-danger"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDelete(donor.id);
+                                        }}
+                                    >
+                                        Delete
+                                    </button>
+                                </span>
+                            </div>
+                            <div className="record-field">
+                                <span className="field-label">Name:</span>
+                                <span className="field-value">{donor.name}</span>
+                            </div>
+                            <div className="record-field">
+                                <span className="field-label">Blood Group:</span>
+                                <span className="field-value">{donor.bloodGroup}</span>
+                            </div>
+                            <div className="record-field">
+                                <span className="field-label">Phone No.:</span>
+                                <span className="field-value">{donor.phone}</span>
+                            </div>
                         </li>
                     ))}
                 </ul>

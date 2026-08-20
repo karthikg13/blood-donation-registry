@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDonationsForDonor, createDonation, updateDonation, deleteDonation } from "./api";
+import { getDonationsForDonor, createDonation, updateDonation, deleteDonation, onAuthSuccess } from "./api";
 
 function DonationList({ donorId }) {
     const [donations, setDonations] = useState([]);
@@ -12,6 +12,10 @@ function DonationList({ donorId }) {
     useEffect(() => {
         setPage(0);
     }, [donorId]);
+
+    useEffect(() => {
+        onAuthSuccess(() => setError(""));
+    }, []);
 
     useEffect(() => {
         if (donorId) {
@@ -121,14 +125,32 @@ function DonationList({ donorId }) {
             ) : (
                 <ul className="record-list">
                     {donations.map((donation) => (
-                        <li key={donation.id} className="record-row">
-                            <span className="record-info">
-                                {donation.donationDate} — {donation.quantity}ml — {donation.location}
-                            </span>
-                            <span className="record-actions">
-                                <button className="btn-small" onClick={() => handleEditClick(donation)}>Edit</button>
-                                <button className="btn-small btn-small-danger" onClick={() => handleDelete(donation.id)}>Delete</button>
-                            </span>
+                        <li key={donation.id} className="record-card">
+                            <div className="record-card-header">
+                                <span className="record-actions">
+                                    <button className="btn-small" onClick={() => handleEditClick(donation)}>
+                                        Edit
+                                    </button>
+                                    <button
+                                        className="btn-small btn-small-danger"
+                                        onClick={() => handleDelete(donation.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </span>
+                            </div>
+                            <div className="record-field">
+                                <span className="field-label">Date:</span>
+                                <span className="field-value">{donation.donationDate}</span>
+                            </div>
+                            <div className="record-field">
+                                <span className="field-label">Quantity:</span>
+                                <span className="field-value">{donation.quantity} ml</span>
+                            </div>
+                            <div className="record-field">
+                                <span className="field-label">Location:</span>
+                                <span className="field-value">{donation.location}</span>
+                            </div>
                         </li>
                     ))}
                 </ul>

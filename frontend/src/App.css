@@ -171,30 +171,48 @@ body {
   gap: 8px;
 }
 
-.record-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 10px 12px;
+.record-card {
   border-left: 3px solid var(--color-border);
   background: var(--color-bg);
   border-radius: 6px;
-  font-size: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
 }
 
-.record-row.selected {
+.record-card:hover {
+  border-left-color: var(--color-accent);
+}
+
+.record-card.selected {
   border-left-color: var(--color-accent);
   background: #FBF1F0;
 }
 
-.record-info {
-  cursor: pointer;
-  flex: 1;
+.record-card-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
 }
 
-.record-info:hover {
-  color: var(--color-accent);
+.donation-list .record-card {
+  cursor: default;
+}
+
+.record-field {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+  padding: 2px 0;
+}
+
+.field-label {
+  color: var(--color-text-muted);
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.field-value {
+  color: var(--color-text);
 }
 
 .record-actions {
@@ -218,4 +236,77 @@ body {
   font-size: 13px;
   color: var(--color-text-muted);
 }
- 
+
+/* ===== Auth modal ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(38, 34, 31, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+
+.modal-card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(38, 34, 31, 0.2);
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.modal-subtitle {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin: 0 0 16px;
+}
+
+.modal-input {
+  display: block;
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.modal-input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  background: var(--color-surface);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-text);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(38, 34, 31, 0.25);
+  z-index: 200;
+}
