@@ -66,10 +66,10 @@ function DonorList({ selectedDonorId, onSelectDonor }) {
     }
 
     return (
-        <div>
-            <h2>Donors</h2>
+        <div className="panel">
+            <h2 className="panel-title">Donors</h2>
 
-            <form onSubmit={handleSubmit}>
+            <form className="record-form" onSubmit={handleSubmit}>
                 <input
                     placeholder="Name"
                     value={form.name}
@@ -85,31 +85,31 @@ function DonorList({ selectedDonorId, onSelectDonor }) {
                     value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 />
-                <button type="submit">{editingId ? "Save Changes" : "Add Donor"}</button>
+                <button type="submit" className="btn btn-primary">{editingId ? "Save Changes" : "Add Donor"}</button>
                 {editingId && (
-                    <button type="button" onClick={handleCancelEdit}>Cancel</button>
+                    <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
                 )}
             </form>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className="error-banner">{error}</p>}
 
-            <ul>
-                {donors.map((donor) => (
-                    <li key={donor.id}>
-                    <span
-                        onClick={() => handleSelectDonor(donor.id)}
-                        style={{
-                        cursor: "pointer",
-                        fontWeight: selectedDonorId === donor.id ? "bold" : "normal",
-                        }}
-                    >
-                        {donor.name} — {donor.bloodGroup} — {donor.phone}
-                    </span>
-                    <button onClick={() => handleEditClick(donor)}>Edit</button>
-                    <button onClick={() => handleDelete(donor.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            {donors.length === 0 ? (
+                <p className="empty-state">No donors yet. Add one above to get started.</p>
+            ) : (
+                <ul className="record-list">
+                    {donors.map((donor) => (
+                        <li key={donor.id} className={selectedDonorId === donor.id ? "record-row selected" : "record-row"}>
+                            <span className="record-info" onClick={() => handleSelectDonor(donor.id)}>
+                                {donor.name} — {donor.bloodGroup} — {donor.phone}
+                            </span>
+                            <span className="record-actions">
+                                <button className="btn-small" onClick={() => handleEditClick(donor)}>Edit</button>
+                                <button className="btn-small btn-small-danger" onClick={() => handleDelete(donor.id)}>Delete</button>
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

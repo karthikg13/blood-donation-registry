@@ -59,11 +59,13 @@ function DonationList({ donorId }) {
             quantity: donation.quantity,
             location: donation.location,
         });
+        setError("");
     }
 
     function handleCancelEdit() {
         setEditingId(null);
         setForm({ donationDate: "", quantity: "", location: "" });
+        setError("");
     }
 
     async function handleDelete(id) {
@@ -77,14 +79,19 @@ function DonationList({ donorId }) {
     }
 
     if (!donorId) {
-        return <p>Select a donor to see their donations.</p>;
+        return (
+            <div className="panel">
+                <h2 className="panel-title">Donations</h2>
+                <p className="empty-state">Select a donor to see their donations.</p>
+            </div>
+        );
     }
 
     return (
-        <div>
-            <h2>Donations</h2>
+        <div className="panel">
+            <h2 className="panel-title">Donations</h2>
 
-            <form onSubmit={handleSubmit}>
+            <form className="record-form" onSubmit={handleSubmit}>
                 <input
                     type="date"
                     value={form.donationDate}
@@ -101,31 +108,39 @@ function DonationList({ donorId }) {
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
                 />
-                <button type="submit">{editingId ? "Save Changes" : "Add Donation"}</button>
+                <button type="submit" className="btn btn-primary">{editingId ? "Save Changes" : "Add Donation"}</button>
                 {editingId && (
-                    <button type="button" onClick={handleCancelEdit}>Cancel</button>
+                    <button type="button" className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
                 )}
             </form>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className="error-banner">{error}</p>}
 
-            <ul>
-                {donations.map((donation) => (
-                    <li key={donation.id}>
-                        {donation.donationDate} — {donation.quantity}ml — {donation.location}
-                        <button onClick={() => handleEditClick(donation)}>Edit</button>
-                        <button onClick={() => handleDelete(donation.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            {donations.length === 0 ? (
+                <p className="empty-state">No donations recorded yet for this donor.</p>
+            ) : (
+                <ul className="record-list">
+                    {donations.map((donation) => (
+                        <li key={donation.id} className="record-row">
+                            <span className="record-info">
+                                {donation.donationDate} — {donation.quantity}ml — {donation.location}
+                            </span>
+                            <span className="record-actions">
+                                <button className="btn-small" onClick={() => handleEditClick(donation)}>Edit</button>
+                                <button className="btn-small btn-small-danger" onClick={() => handleDelete(donation.id)}>Delete</button>
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            )}
 
             {totalPages > 1 && (
-                <div>
-                    <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+                <div className="pagination">
+                    <button className="btn-small" disabled={page === 0} onClick={() => setPage(page - 1)}>
                         Previous
                     </button>
                     <span> Page {page + 1} of {totalPages} </span>
-                    <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
+                    <button className="btn-small" disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
                         Next
                     </button>
                 </div>
