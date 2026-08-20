@@ -4,8 +4,11 @@ async function handleResponse(response) {
     if (response.status === 204) return null;
     const data = await response.json().catch(() => null);
     if (!response.ok) {
-        const message = data?.message || "Something went wrong";
-        throw new Error(message);
+        if (data?.errors) {
+            const validationMessages = Object.values(data.errors).join(", ");
+            throw new Error(validationMessages);
+        }
+        throw new Error(data?.message || "Something went wrong");
     }
     return data;
 }
